@@ -13,6 +13,7 @@ function App() {
               한정판
             </Link>
           </h1>
+          
         </header>
       </div>
     </Router>
