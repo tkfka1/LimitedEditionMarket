@@ -1,7 +1,7 @@
 name: Docker Publish
 
 on:
-  push: # master Branch에서 back/myauthapp 경로에 push 이벤트가 일어났을 때만 실행
+  push:
     paths:
       - 'back/myauthapp/**'
     branches:
@@ -19,14 +19,6 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build, tag, and push Docker image
-      id: build-image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: 082284794827.dkr.ecr.us-east-1.amazonaws.com/gopod/myauthapp:latest
-
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
 
@@ -39,8 +31,7 @@ jobs:
         context: back/myauthapp
         platforms: linux/amd64,linux/arm64
         push: true
-        tags: |
-          082284794827.dkr.ecr.us-east-1.amazonaws.com/gopod/myauthapp:latest
-        secrets:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        tags: 082284794827.dkr.ecr.us-east-1.amazonaws.com/gopod/myauthapp:latest
+        secrets: |
+          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
