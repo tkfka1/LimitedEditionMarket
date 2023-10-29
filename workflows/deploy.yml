@@ -1,7 +1,7 @@
 name: React CI/CD to S3
 
 on:
-  push:
+  push: # master Branch에서 front/limited-edition-market 경로에 push 이벤트가 일어났을 때만 실행
     paths:
       - 'front/limited-edition-market/**'
     branches:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout # 체크아웃
         uses: actions/checkout@v2
 
       - name: Set up Node.js
@@ -34,7 +34,7 @@ jobs:
           REACT_APP_CLIENT_KEY: ${{ secrets.REACT_APP_CLIENT_KEY }}
           REACT_APP_CUSTOMER_KEY: ${{ secrets.REACT_APP_CUSTOMER_KEY }}
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials # S3 배포
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
