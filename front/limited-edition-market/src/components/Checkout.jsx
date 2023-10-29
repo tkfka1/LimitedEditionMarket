@@ -67,7 +67,7 @@ export default function CheckoutPage({ onClose, price: initialPrice, productName
       paymentWidgetRef.current = paymentWidget;
       paymentMethodsWidgetRef.current = paymentMethodsWidget;
     })();
-  }, []);
+  }, [price]);
 
   useEffect(() => {
     const paymentMethodsWidget = paymentMethodsWidgetRef.current;
