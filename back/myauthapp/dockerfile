@@ -1,0 +1,28 @@
+# Stage 1: Build the Go app
+FROM golang:1.18 AS builder
+
+# Set the Current Working Directory inside the container
+WORKDIR /app
+
+# Copy everything from the current directory to the Working Directory inside the container
+COPY . .
+
+# Build the Go app statically
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+
+# Stage 2: Copy the build app to a slim image
+FROM alpine:latest
+
+WORKDIR /app
+
+# Copy the binary from builder
+COPY --from=builder /app/main .
+
+# Ensure the binary is executable
+RUN chmod +x ./main
+
+# Expose port 8080
+EXPOSE 8080
+
+# Command to run the application
+ENTRYPOINT ["./main"]

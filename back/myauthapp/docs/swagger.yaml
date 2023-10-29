@@ -1,0 +1,240 @@
+definitions:
+  models.Product:
+    properties:
+      description:
+        type: string
+      expectedPurchase:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      isOnSale:
+        type: boolean
+      popularity:
+        type: integer
+      price:
+        type: integer
+      productName:
+        type: string
+      saleEnd:
+        type: string
+      saleStart:
+        type: string
+      userId:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /add-product:
+    post:
+      consumes:
+      - application/json
+      description: Add product with details
+      parameters:
+      - description: Product Name
+        in: body
+        name: productName
+        required: true
+        schema:
+          type: string
+      - description: Description
+        in: body
+        name: description
+        required: true
+        schema:
+          type: string
+      - description: Price
+        in: body
+        name: price
+        required: true
+        schema:
+          type: integer
+      - description: Image URL
+        in: body
+        name: image
+        required: true
+        schema:
+          type: string
+      - description: User ID
+        in: body
+        name: userId
+        required: true
+        schema:
+          type: integer
+      - description: Sale Start DateTime
+        in: body
+        name: saleStart
+        required: true
+        schema:
+          type: string
+      - description: Sale End DateTime
+        in: body
+        name: saleEnd
+        required: true
+        schema:
+          type: string
+      - description: Expected Purchase
+        in: body
+        name: expectedPurchase
+        required: true
+        schema:
+          type: string
+      - description: Popularity
+        in: body
+        name: popularity
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"Product added!
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Add a new product
+      tags:
+      - product
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login with username and password
+      parameters:
+      - description: Username
+        in: body
+        name: username
+        required: true
+        schema:
+          type: string
+      - description: Password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'token": "JWT token", "user": {"id": 1, "username": "user",
+            "email": "user@example.com", "userRank": 1}'
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Log in a user
+      tags:
+      - auth
+  /auth/profile/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get user's profile information by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Get the profile of a user
+      tags:
+      - auth
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Signup with username, password, and email
+      parameters:
+      - description: Username
+        in: body
+        name: username
+        required: true
+        schema:
+          type: string
+      - description: Password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: Email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"Registered!
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new user
+      tags:
+      - auth
+  /product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a product using its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message":"Product deleted!
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a product by ID
+      tags:
+      - product
+  /products:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all products
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Product'
+            type: array
+      summary: Get all products
+      tags:
+      - product
+swagger: "2.0"

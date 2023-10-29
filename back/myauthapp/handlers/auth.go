@@ -11,6 +11,17 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// Signup creates a new user
+// @Summary Create a new user
+// @Description Signup with username, password, and email
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param   username     body    string     true        "Username"
+// @Param   password     body    string     true        "Password"
+// @Param   email        body    string     true        "Email"
+// @Success 200 {object} map[string]string "message":"Registered!"
+// @Router /auth/signup [post]
 func Signup(c echo.Context) error {
 
 	// 1. 사용자 데이터 바인딩
@@ -55,6 +66,16 @@ func Signup(c echo.Context) error {
 
 }
 
+// Login logs in a user
+// @Summary Log in a user
+// @Description Login with username and password
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param   username     body    string     true        "Username"
+// @Param   password     body    string     true        "Password"
+// @Success 200 {object} map[string]interface{} "token": "JWT token", "user": {"id": 1, "username": "user", "email": "user@example.com", "userRank": 1}
+// @Router /auth/login [post]
 func Login(c echo.Context) error {
 	user := &models.User{}
 	if err := c.Bind(user); err != nil {
@@ -100,6 +121,15 @@ func Login(c echo.Context) error {
 	})
 }
 
+// Profile gets the profile of a user
+// @Summary Get the profile of a user
+// @Description Get user's profile information by ID
+// @Tags auth
+// @Accept  json
+// @Produce  json
+// @Param   id     path     string     true        "User ID"
+// @Success 200 {object} models.User
+// @Router /auth/profile/{id} [get]
 func Profile(c echo.Context) error {
 	userId := c.Param("id")
 	if userId == "" {

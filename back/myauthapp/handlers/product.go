@@ -11,6 +11,23 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// AddProduct adds a new product
+// @Summary Add a new product
+// @Description Add product with details
+// @Tags product
+// @Accept  json
+// @Produce  json
+// @Param   productName      body    string     true        "Product Name"
+// @Param   description      body    string     true        "Description"
+// @Param   price            body    int64      true        "Price"
+// @Param   image            body    string     true        "Image URL"
+// @Param   userId           body    int        true        "User ID"
+// @Param   saleStart        body    string     true        "Sale Start DateTime"
+// @Param   saleEnd          body    string     true        "Sale End DateTime"
+// @Param   expectedPurchase body    string     true        "Expected Purchase"
+// @Param   popularity       body    int        true        "Popularity"
+// @Success 200 {object} map[string]string "message":"Product added!"
+// @Router /add-product [post]
 func AddProduct(c echo.Context) error {
 	product := &models.Product{}
 
@@ -30,6 +47,15 @@ func AddProduct(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, map[string]string{"message": "Product added!"})
 }
+
+// GetProducts gets all products
+// @Summary Get all products
+// @Description Get a list of all products
+// @Tags product
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} models.Product
+// @Router /products [get]
 func GetProducts(c echo.Context) error {
 	products, err := models.GetAllProducts()
 	if err != nil {
@@ -40,6 +66,15 @@ func GetProducts(c echo.Context) error {
 	return c.JSON(http.StatusOK, products)
 }
 
+// DeleteProduct deletes a product by ID
+// @Summary Delete a product by ID
+// @Description Delete a product using its ID
+// @Tags product
+// @Accept  json
+// @Produce  json
+// @Param   id     path     int     true        "Product ID"
+// @Success 200 {object} map[string]string "message":"Product deleted!"
+// @Router /product/{id} [delete]
 func DeleteProduct(c echo.Context) error {
 	// URL에서 제품 ID를 가져옵니다.
 	idParam := c.Param("id")
