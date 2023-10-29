@@ -63,10 +63,11 @@ func Login(c echo.Context) error {
 
 	fmt.Printf("Bound User Data - Username: %s, Password: %s\n", user.Username, user.Password)
 
-	row := models.Db.QueryRow("SELECT id, password FROM users WHERE username=?", user.Username)
-	var retrievedPassword string
-	var id int
-	if err := row.Scan(&id, &retrievedPassword); err != nil {
+	// userRank를 받아오도록 SQL 쿼리 업데이트
+	row := models.Db.QueryRow("SELECT id, username, email, password, userRank FROM users WHERE username=?", user.Username)
+	var retrievedPassword, retrievedUsername, retrievedEmail string
+	var id, userRank int                                                                                      // userRank 변수 추가
+	if err := row.Scan(&id, &retrievedUsername, &retrievedEmail, &retrievedPassword, &userRank); err != nil { // userRank 스캔 추가
 		if err == sql.ErrNoRows {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Username or password is incorrect.")
 		}
@@ -88,16 +89,34 @@ func Login(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, "Could not generate the token.")
 	}
 
-	return c.JSON(http.StatusOK, map[string]string{
+	return c.JSON(http.StatusOK, map[string]interface{}{
 		"token": token,
+		"user": map[string]interface{}{
+			"id":       id,
+			"username": retrievedUsername,
+			"email":    retrievedEmail,
+			"userRank": userRank,
+		},
 	})
 }
 
 func Profile(c echo.Context) error {
-	// 여기에 프로필 가져오는 로직을 구현하세요.
-	return c.JSON(http.StatusOK, echo.Map{
-		"profile": "User Profile Data",
-	})
+	userId := c.Param("id")
+	if userId == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, "User ID is required.")
+	}
+
+	var userProfile models.User
+	row := models.Db.QueryRow("SELECT id, username, email FROM users WHERE id=?", userId)
+	err := row.Scan(&userProfile.ID, &userProfile.Username, &userProfile.Email)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return echo.NewHTTPError(http.StatusNotFound, "User not found.")
+		}
+		return echo.NewHTTPError(http.StatusInternalServerError, "Internal server error.")
+	}
+
+	return c.JSON(http.StatusOK, userProfile)
 }
 
 func createJWTToken(userID int) (string, error) {

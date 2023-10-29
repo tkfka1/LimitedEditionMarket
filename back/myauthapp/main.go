@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"myauthapp/handlers"
-	myMiddleware "myauthapp/middleware"
 	"myauthapp/models"
 	"myauthapp/utils"
 
@@ -34,9 +33,14 @@ func main() {
 
 	e.POST("/auth/signup", handlers.Signup)
 	e.POST("/auth/login", handlers.Login)
-	e.GET("/auth/profile", handlers.Profile, myMiddleware.JWTAuthentication)
+	e.GET("/auth/profile/:id", handlers.Profile)
 	e.GET("/simple", handlers.SimpleGet)
+
 	e.POST("/add-product", handlers.AddProduct)
+	e.DELETE("/product/:id", handlers.DeleteProduct)
+	e.GET("/products", handlers.GetProducts)
+
+	e.POST("/order", handlers.AddOrder)
 
 	e.Start(":" + port)
 }
