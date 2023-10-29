@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout # 체크아웃
+      - name: Checkout  # 체크아웃
         uses: actions/checkout@v2
 
       - name: Set up Node.js
@@ -34,7 +34,7 @@ jobs:
           REACT_APP_CLIENT_KEY: ${{ secrets.REACT_APP_CLIENT_KEY }}
           REACT_APP_CUSTOMER_KEY: ${{ secrets.REACT_APP_CUSTOMER_KEY }}
 
-      - name: Configure AWS credentials # S3 배포
+      - name: Configure AWS credentials  # S3 배포
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
