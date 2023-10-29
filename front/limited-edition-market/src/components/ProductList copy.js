@@ -1,12 +1,23 @@
+// src/components/ProductList.js
+
 import React, { useState, useEffect } from 'react';
-import ProductDetail from './ProductDetail';
 import { Link } from 'react-router-dom';
-import '../App.css'; 
+import '../App.css';  // 위에서 추가한 CSS를 여기에 임포트
 
 function ProductList() {
   const [products, setProducts] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  const handleProductClick = (productId) => {
+    setSelectedProductId(productId);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedProductId(null);
+  };
 
   useEffect(() => {
     // TODO: 서버로부터 데이터 가져오기
@@ -20,23 +31,21 @@ function ProductList() {
     ]);
   }, []);
 
-  const handleProductClick = (productId) => {
-    setSelectedProductId(productId);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedProductId(null);
-  };
-
   return (
+      <div className="container mt-5">
+        <h2>상품 목록</h2>
+        <div className="row">
+          {products.map(product => (
+            <div key={product.id} className="col-md-4 mb-4">
+              <div onClick={() => handleProductClick(product.id)} style={{ cursor: 'pointer' }}>
+
+    
     <div className="container mt-5">
       <h2>상품 목록</h2>
       <div className="row">
         {products.map(product => (
           <div key={product.id} className="col-md-4 mb-4">
-            <div onClick={() => handleProductClick(product.id)} style={{ cursor: 'pointer' }}>
+            <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
               <div className="card">
                 <div className="aspect-ratio">
                   <img src={product.imageUrl} alt={product.name} />
@@ -46,16 +55,11 @@ function ProductList() {
                   <p className="card-text">{product.price}원</p>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         ))}
       </div>
       <Link to="/add-product" className="btn btn-primary mt-3">상품 추가</Link>
-
-      {/* 선택된 상품의 상세 정보를 모달로 보여주는 부분 */}
-      {showModal && selectedProductId && (
-        <ProductDetail productId={selectedProductId} onClose={handleCloseModal} />
-      )}
     </div>
   );
 }

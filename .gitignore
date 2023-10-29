@@ -19,3 +19,5 @@
 
 # Go workspace file
 go.work
+front/limited-edition-market/.env
+back/myauthapp/config.json
