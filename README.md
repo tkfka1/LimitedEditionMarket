@@ -62,3 +62,24 @@ yarn install
 ```bash
 yarn start
 ```
+
+
+
+프로젝트 특징
+통합 모니터링: Grafana와 Prometheus를 통해 시스템 및 애플리케이션의 실시간 모니터링이 가능합니다.
+로그 관리: Loki와 Promtail을 활용하여 로그를 중앙 집중적으로 수집 및 조회합니다.
+자동 배포: AWS CodeDeploy Github Action을 이용해 최신 변경사항을 자동으로 배포합니다.
+확장성: Terraform 코드를 기반으로 하기 때문에, 클라우드 인프라의 수정 및 확장이 용이합니다.
+<!-- 보안: 각 서비스의 네트워크 구성 및 보안 그룹 설정을 Terraform을 통해 세밀하게 관리합니다. -->
+
+
+AWS CodeDeploy 액션 사용
+
+CodeDeploy 애플리케이션 및 배포 그룹을 생성합니다.
+GitHub 리포지토리와 연결하여 자동 배포 트리거를 설정합니다.
+변경 사항이 push되면, AWS CodeDeploy 을 통해 자동 배포가 시작됩니다.
+
+
+환경 설정
+AWS CLI
+Terraform
