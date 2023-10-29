@@ -25,7 +25,7 @@ function LoginModal({ show, handleClose, onLogin }) {
       const data = await response.json();
 
       if (response.status === 200 && isLogin) {
-        onLogin(data.token);
+        onLogin(data.token, data.user); // data.user 를 추가로 전달합니다.
         handleClose();
       } else {
         setErrorMessage(data.message || '요청 실패');
