@@ -10,10 +10,15 @@ CI/CD 파이프라인을 통해 개발 및 배포 과정을 자동화하고, 종
 ## 기술 스택
 
 Frontend: React.js를 사용하여 사용자 친화적인 인터페이스를 구현하고 AWS S3를 통해 정적 웹 사이트를 배포합니다.
+
 Backend: Go 언어 기반의 Echo 프레임워크를 사용하여 RESTful API를 개발하고 AWS ECS-Fargate를 통해 서버리스 환경에서 실행합니다.
+
 Database: Amazon RDS에 호스팅된 MySQL을 사용하여 데이터를 안전하고 신뢰성 있게 관리합니다.
+
 Infrastructure: AWS S3, AWS ECS-Fargate, AWS ECR을 통해 프론트엔드 및 백엔드 서비스를 운영합니다.
+
 CI/CD: GitHub Actions와 AWS CodePipeline(CodeDeploy)를 통합하여 코드 변경 사항을 자동으로 감지하고 배포합니다.
+
 Monitoring: Prometheus와 Loki(Promtail)를 통해 메트릭 및 로그를 수집하고, Grafana 및 AWS CloudWatch로 시스템을 모니터링합니다.
 
 ## 기능
